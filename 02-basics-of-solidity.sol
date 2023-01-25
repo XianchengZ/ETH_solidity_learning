@@ -5,7 +5,8 @@ pragma solidity 0.8.8;
 // ^ means any version >= 0.8.7, e.g. ^0.8.7
 // between a range: >=0.8.7 <0.9.0
 
-
+// EVM, Ethereum Virtual Machine
+// Avalanche, Fantom, Polygon -> EVM compatible
 
 contract SimpleStorage {
     // basic types: boolean, uint, int, address, bytes (8 bits -> 1 byte)
@@ -25,6 +26,9 @@ contract SimpleStorage {
         uint256 favoriteNumber;
         string name;
     }
+
+    // dictionary in sol:
+    mapping( string => uint256 ) public nameToFavoriteNumber;
 
     People[] public people; // people is an array of People
 
@@ -52,6 +56,7 @@ contract SimpleStorage {
     // we cannot specify variables to be stack, code or logs
     function addPerson( string memory _name, uint256 _favoriteNumber ) public {
         people.push(People( _favoriteNumber, _name ));
+        nameToFavoriteNumber[ _name ] = _favoriteNumber;
     }
 
 
