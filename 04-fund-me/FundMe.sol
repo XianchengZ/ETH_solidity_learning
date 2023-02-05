@@ -8,25 +8,32 @@ pragma solidity ^0.8.8;
 // import library
 import "./PriceConverter.sol";
 
+// constant, immutable -> to lower gas fee
+// constant -> assigned at compile time
+// immutable -> can be un-assigned first
+//              doesn't change after assigned
+
+error NotOwner();
+
 contract FundMe {
     using PriceConverter for uint256;
 
-    uint256 public minimumUsd = 50 * 1e18;
+    uint256 public constant MINIMUM_USD = 50 * 1e18;
 
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
-    address public owner;
+    address public immutable i_owner;
 
     constructor(){
-        owner = msg.sender;
+        i_owner = msg.sender;
     }
 
     function fund() public payable {
         // set a minimum amount in USD
 
         // global keyword to get the amount of money who calls this function
-        require(msg.value.getConversionRate() >= minimumUsd, "Didn't send enough"); // 1e18 = 1 * 10^18 wei = 1 Eth
+        require(msg.value.getConversionRate() >= MINIMUM_USD, "Didn't send enough"); // 1e18 = 1 * 10^18 wei = 1 Eth
         funders.push( msg.sender );
         addressToAmountFunded[ msg.sender ] += msg.value;
         // require revert the action if the condition is not satisfied
@@ -58,7 +65,34 @@ contract FundMe {
     }
 
     modifier onlyOwner{
-        require(msg.sender == owner, "You are not the owner!");
+        // require(msg.sender == i_owner, "You are not the owner!");
+        if( msg.sender != i_owner ) revert NotOwner();
         _; // call function code
+    }
+
+    // What happens if someone send this contract ETH without calling the fund function?
+
+    // receive()
+    // fallback()
+    
+    
+    // Explainer from: https://solidity-by-example.org/fallback/
+    // Ether is sent to contract
+    //      is msg.data empty?
+    //          /   \ 
+    //         yes  no
+    //         /     \
+    //    receive()?  fallback() 
+    //     /   \ 
+    //   yes   no
+    //  /        \
+    //receive()  fallback()
+
+    fallback() external payable {
+        fund();
+    }
+
+    receive() external payable {
+        fund();
     }
 }
