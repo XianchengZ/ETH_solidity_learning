@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "solcjs --bin --abi --include-path node_modules/ --base-path ./ -o contracts/ contracts/SimpleStorage.sol"
+    "compile": "solcjs --bin --abi --include-path node_modules/ --base-path ./ -o . SimpleStorage.sol"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ethers": "^5.5.3",
     "solc": "^0.8.7-fixed"
   },
   "devDependencies": {
