@@ -5,7 +5,7 @@ const main = async () => {
   // rpc server: http://127.0.0.1:7545
   const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:7545')
   const wallet = new ethers.Wallet(
-    '64913d67ce8fcdceec9ab3ba7506a75d7cb18c6d53ad7b78ca1e2204ae27f126',
+    '265a39d592fb9cb029434c21b5279c9340961f77bad41a9b8da2d517342e8724',
     provider
   )
 
@@ -18,10 +18,16 @@ const main = async () => {
   // it is used to deploy a contract
   const contractFactory = new ethers.ContractFactory(abi, binary, wallet)
   console.log('Deploying, please wait...')
+  // const contract = await contractFactory.deploy({ gasLimit: 10000000 })
   const contract = await contractFactory.deploy()
-  // const deploymentReceipt = await contract.deployTransaction.wait()
-  // console.log(`Contract deployed to ${contract.address}`)
-  console.log(contract)
+
+  // transaction receipt is when you wait for block confirmation
+  const transactionReceipt = await contract.deployTransaction.wait(1)
+
+  console.log('Here is the deployment transaction: ')
+  console.log(contract.deployTransaction) // what you get right away
+  console.log('Here is the transaction receipt: ')
+  console.log(transactionReceipt)
 }
 
 main()
