@@ -24,10 +24,12 @@ const main = async () => {
   // transaction receipt is when you wait for block confirmation
   const transactionReceipt = await contract.deployTransaction.wait(1)
 
-  console.log('Here is the deployment transaction: ')
-  console.log(contract.deployTransaction) // what you get right away
-  console.log('Here is the transaction receipt: ')
-  console.log(transactionReceipt)
+  console.log
+
+  // console.log('Here is the deployment transaction: ')
+  // console.log(contract.deployTransaction) // what you get right away
+  // console.log('Here is the transaction receipt: ')
+  // console.log(transactionReceipt)
 }
 
 main()
