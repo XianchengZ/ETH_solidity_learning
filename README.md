@@ -19,4 +19,10 @@ Section 2 - 4 use the same starter code, but we add more codes to accomplish mor
 
 ...more to learn
 
+Optionally for prettier setting:
+
+- we can use `prettier` and `prettier-plugin-solidity` to enforce the format of codebase
+  with other developers.
+- Also add a `.prettierrc` file for specifying the format
+
 There are some untracked old learnings, which include the `inbox`, `lottery` and `lottery-react` folder.
