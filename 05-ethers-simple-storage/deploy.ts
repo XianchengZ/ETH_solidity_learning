@@ -5,8 +5,10 @@ dotenv.config()
 
 const main = async () => {
   // rpc server: http://127.0.0.1:7545
-  const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider)
+  const provider = new ethers.providers.JsonRpcProvider(
+    process.env.TESTNET_RPC_URL
+  )
+  const wallet = new ethers.Wallet(process.env.GEORLI_PRIVATE_KEY!, provider)
 
   // // To further secure:
   // const encryptedJson = fs.readFileSync('./.encryptedKey.json', 'utf8')
@@ -31,6 +33,8 @@ const main = async () => {
   // transaction receipt is when you wait for block confirmation
   // wait till the transaction has actually went through
   await contract.deployTransaction.wait(1)
+  console.log(`Contract Addresss: ${contract.address}`)
+  // deployed contract address on Georli: 0x2F86166ccd223Fe15835e5E107B5b2bF2214AcC8
 
   // // --------------------------------------------------------------------------------
   // // manually send a transaction
