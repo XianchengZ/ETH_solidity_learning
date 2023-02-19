@@ -8,6 +8,14 @@ const main = async () => {
   const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider)
 
+  // // To further secure:
+  // const encryptedJson = fs.readFileSync('./.encryptedKey.json', 'utf8')
+  // let wallet = await ethers.Wallet.fromEncryptedJsonSync(
+  //   encryptedJson,
+  //   process.env.PRIVATE_KEY_PASSWORD!
+  // )
+  // wallet = await wallet.connect(provider)
+
   const abi = fs.readFileSync('./SimpleStorage_sol_SimpleStorage.abi', 'utf8')
   const binary = fs.readFileSync(
     './SimpleStorage_sol_SimpleStorage.bin',
