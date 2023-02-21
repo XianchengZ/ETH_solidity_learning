@@ -17,6 +17,8 @@ Section 2 - 4 use the same starter code, but we add more codes to accomplish mor
 - `hardhat`
 - `ganache`
 
+`section 6` we will use hardhat.
+
 ...more to learn
 
 Optionally for prettier setting:
