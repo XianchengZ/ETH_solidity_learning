@@ -19,6 +19,8 @@ Section 2 - 4 use the same starter code, but we add more codes to accomplish mor
 
 `section 6` we will use hardhat.
 
+Hardhat really helps with simplifying things.
+
 ...more to learn
 
 Optionally for prettier setting:

@@ -1,23 +1,41 @@
-import { ethers } from "hardhat";
+import { ethers, run, network } from 'hardhat'
+
+const verify = async (contractAddress: string, args: any[]) => {
+	console.log('Verifying contract...')
+	try {
+		await run('verify:verify', {
+			address: contractAddress,
+			constructorArguments: args,
+		})
+	} catch (e: any) {
+		if (e.message.toLowerCase().includes('already verified')) {
+			console.log('Already verified!')
+		} else {
+			console.log(e)
+		}
+	}
+}
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+	const SimpleStorageFactory = await ethers.getContractFactory(
+		'SimpleStorage'
+	)
+	console.log('Deploying contract...')
+	const SimpleStorage = await SimpleStorageFactory.deploy()
+	await SimpleStorage.deployed()
+	console.log(`Deployed contract to: ${SimpleStorage.address}`)
 
-  const lockedAmount = ethers.utils.parseEther("1");
-
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+	if (network.config.chainId === 5 && process.env.ETHERSCAN_API_KEY) {
+		await SimpleStorage.deployTransaction.wait(6)
+		await verify(SimpleStorage.address, [])
+	}
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+	.then(() => process.exit(1))
+	.catch((error) => {
+		console.error(error)
+		process.exitCode = 1
+	})
