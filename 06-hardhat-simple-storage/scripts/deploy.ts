@@ -29,6 +29,14 @@ async function main() {
 		await SimpleStorage.deployTransaction.wait(6)
 		await verify(SimpleStorage.address, [])
 	}
+
+	const currentValue = await SimpleStorage.retrieve()
+	console.log(`Current Value is: ${currentValue}`)
+
+	const transactionResponse = await SimpleStorage.store('78')
+	await transactionResponse.wait(1)
+	const updatedValue = await SimpleStorage.retrieve()
+	console.log(`Updated Value is: ${updatedValue}`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
